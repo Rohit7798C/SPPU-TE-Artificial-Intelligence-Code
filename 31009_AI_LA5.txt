@@ -1,0 +1,45 @@
+#chatbot
+
+import random
+
+def greet():
+    greetings = ["Hi there!Welcome to Shopizo!", "Hello!Welcome to Shopizo!", "Hey!Welcome to Shopizo!"]
+    return random.choice(greetings)
+
+def ask_name():
+    return input("What's your name? ")
+
+def chat():
+    print(greet())
+    name = ask_name()
+    print("Nice to meet you, " + name + "! How can I help you?")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == 'exit':
+            print("Shopizo: Goodbye!")
+            break
+        else:
+            response = generate_response(user_input)
+            print("Shopizo:", response)
+
+def generate_response(user_input):
+    responses = {
+        "i want to track my order": "ok!Can you tell me order number?",
+        "i want to update my contact number": "Sure!Enter your new contact number",
+        "i want to have a call with your authority": "OK.You will receive a call soon!",
+        "when Will I receive my order": "Tell me your Order number",
+        "i want to update my adress": "Sure sir,tell us your new address.",
+        "what is the procedure for exchanging order": "Go to my orders,go to your recent order for exchange,select the option for exhange",
+        "what is the processs for return?": "Go to my orders,go to your recent order for exchange,select the option for return",
+        "my money after return hasn't deposited yet,please  let me know": "Can I know your account number?",
+        "in how many days is product generally delivered": "Generally in less than 4-5 days",
+        "will I get exchange in case of damaged products": "Which products can be exchanged is specified at the begining of product.So you will get an exchange at only those products. ",
+        "thank you": "You're welcome!",
+        "bye": "Goodbye!",
+        "exit": "Goodbye!",
+
+    }
+    response = responses.get(user_input.lower(), "I'm sorry, I didn't understand that.")
+    return response
+
+chat()

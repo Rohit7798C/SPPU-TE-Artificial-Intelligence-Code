@@ -1,0 +1,81 @@
+import heapq
+
+class Node:
+    def __init__(self, state, parent=None, g=0, h=0):
+        self.state = state
+        self.parent = parent
+        self.g = g  # Cost from start node to current node
+        self.h = h  # Heuristic cost from current node to goal node
+
+    def __lt__(self, other):
+        return (self.g + self.h) < (other.g + other.h)
+
+class BoardGame:
+    def __init__(self):
+        self.board = [-1] * 101
+        self.board[3] = 15
+        self.board[11] = 25
+        self.board[19] = 39
+        self.board[31] = 55
+        self.board[37] = 17
+        self.board[53] = 63
+        self.board[61] = 38
+        self.board[73] = 82
+        self.board[81] = 98
+        self.board[87] = 49
+        self.board[91] = 72
+
+    def get_neighbors(self, current_state):
+        neighbors = []
+        for i in range(1, 7):
+            next_state = current_state + i
+            if next_state <= len(self.board) and self.board[next_state] != -1:
+                next_state = self.board[next_state]
+            neighbors.append(next_state)
+        return neighbors
+
+def heuristic(state, goal):
+    return abs(state - goal)
+
+def astar(start, goal, board):
+    open_set = []
+    closed_set = set()
+
+    start_node = Node(start, None, 0, heuristic(start, goal))
+    heapq.heappush(open_set, start_node)
+
+    while open_set:
+        current_node = heapq.heappop(open_set)
+
+        if current_node.state == goal:
+            path = []
+            while current_node:
+                path.append(current_node.state)
+                current_node = current_node.parent
+            return path[::-1]
+
+        closed_set.add(current_node.state)
+
+        for neighbor_state in board.get_neighbors(current_node.state):
+            if neighbor_state in closed_set:
+                continue
+
+            g = current_node.g + 1
+            h = heuristic(neighbor_state, goal)
+            neighbor_node = Node(neighbor_state, current_node, g, h)
+
+            if neighbor_node not in open_set:
+                heapq.heappush(open_set, neighbor_node)
+
+    return None
+
+if __name__ == "__main__":
+    board_game = BoardGame()
+    start = 1
+    goal = 100
+
+    path = astar(start, goal, board_game)
+    if path:
+        print("Shortest path:", path)
+    else:
+        print("No path found.")

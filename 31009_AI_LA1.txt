@@ -1,0 +1,52 @@
+#dfs
+
+graph = {
+    'A' : ['B' , 'E'],
+    'B' : ['D' , 'C' , 'A'],
+    'C' : ['E' , 'D'],
+    'D' : ['C' , 'B'],
+    'E' : ['A', 'C']
+}
+visited = set()
+
+def dfs(visited, graph, s, goal_node):
+    if s not in visited:
+        print(s)
+        visited.add(s)
+
+        if s == goal_node:
+            print('Goal node found!!')
+            return True
+
+        for child in graph[s]:
+            if dfs(visited, graph, child, goal_node):
+                return True
+
+    return False
+dfs(visited , graph , 'A' , 'D')
+
+#bfs
+
+vis =[]
+queue = []
+
+def bfs(vis, graph, s, goal_node):
+    vis.append(s)
+    queue = [s]
+
+    while queue:
+        element = queue.pop(0)
+        print(element)
+
+        if element == goal_node:
+            print('Goal node found!!')
+            return
+
+        for child in graph[element]:
+            if child not in vis:
+                vis.append(child)
+                queue.append(child)
+
+
+print('bfs:')
+bfs(vis , graph , 'A' ,'C')
